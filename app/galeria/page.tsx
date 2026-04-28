@@ -1,37 +1,72 @@
 import React from "react";
-import { Image as ImageIcon } from "lucide-react";
 
 export default function GaleriaPage() {
-  // Array de fotos falsas con tamaños variables para simular mampostería (Masonry)
-  const photos = Array.from({ length: 12 }).map((_, i) => ({
-    id: i,
-    heightClass: ["h-48", "h-64", "h-80", "h-56"][i % 4],
-    title: `Evento Cultural ${i + 1}`,
-  }));
+  const photos = [
+    { id: 0, height: "h-52",  title: "Festival Afrovenezolano 2024", tag: "Cultura" },
+    { id: 1, height: "h-72",  title: "Encuentro de Tambores",        tag: "Música" },
+    { id: 2, height: "h-44",  title: "Feria Gastronómica",           tag: "Gastronomía" },
+    { id: 3, height: "h-64",  title: "Taller de Arte Urbano",        tag: "Arte" },
+    { id: 4, height: "h-48",  title: "Congreso CONADECAFRO 2023",   tag: "Evento" },
+    { id: 5, height: "h-80",  title: "Danza Afrovenezolana",         tag: "Cultura" },
+    { id: 6, height: "h-56",  title: "Mural Comunitario — Caracas",  tag: "Arte" },
+    { id: 7, height: "h-44",  title: "Expo Emprendedoras Afro",      tag: "Emprendimiento" },
+    { id: 8, height: "h-72",  title: "Ceremonia de Identidad",       tag: "Tradición" },
+    { id: 9, height: "h-48",  title: "Clase de Historia Afro",       tag: "Educación" },
+    { id: 10, height: "h-60", title: "Feria de Salud Comunitaria",   tag: "Salud" },
+    { id: 11, height: "h-52", title: "Colectivo Juvenil Afro",       tag: "Juventud" },
+  ];
+
+  const tagColors: Record<string, string> = {
+    Cultura: "bg-brand-purple",
+    Música: "bg-purple-700",
+    Arte: "bg-brand-yellow text-brand-black",
+    Evento: "bg-brand-purple",
+    Gastronomía: "bg-purple-800",
+    Tradición: "bg-brand-purple",
+    Educación: "bg-purple-700",
+    Salud: "bg-brand-purple",
+    Juventud: "bg-purple-700",
+    Emprendimiento: "bg-brand-yellow text-brand-black",
+  };
 
   return (
-    <div className="max-w-7xl mx-auto py-10 px-6 w-full">
-      <h1 className="text-3xl font-bold text-brand-black mb-8 border-l-4 border-brand-purple pl-4">
-        Galería de Actividades
-      </h1>
-      <p className="text-gray-600 mb-8 max-w-2xl">
-        Un espacio para visualizar los trabajos, encuentros y eventos publicados en nuestras redes sociales, destacando el aporte cultural de nuestras comunidades.
-      </p>
+    <div className="max-w-7xl mx-auto w-full py-10 px-4 sm:px-6">
+      {/* Header */}
+      <div className="mb-8">
+        <h1 className="text-3xl sm:text-4xl font-black text-brand-black mb-3 border-l-4 border-brand-purple pl-4">
+          Galería de Actividades
+        </h1>
+        <p className="text-gray-500 max-w-2xl text-sm sm:text-base pl-4">
+          Trabajos, encuentros y eventos de nuestras comunidades publicados en redes sociales.
+        </p>
+      </div>
 
-      {/* CSS columns approach for Masonry layout */}
-      <div className="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-6 space-y-6">
+      {/* Masonry grid */}
+      <div className="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-4 space-y-4">
         {photos.map((photo) => (
-          <div 
-            key={photo.id} 
-            className={`w-full bg-gray-200 rounded-lg overflow-hidden break-inside-avoid relative group ${photo.heightClass}`}
+          <div
+            key={photo.id}
+            className={`w-full bg-gradient-to-br from-gray-200 to-gray-300 rounded-xl overflow-hidden break-inside-avoid relative group ${photo.height} cursor-pointer`}
           >
-            <div className="absolute inset-0 flex items-center justify-center text-gray-400">
-              <ImageIcon size={48} opacity={0.5} />
+            {/* Placeholder gradient */}
+            <div className={`absolute inset-0 opacity-30 bg-gradient-to-br ${
+              photo.id % 3 === 0
+                ? "from-brand-purple/40 to-brand-black/60"
+                : photo.id % 3 === 1
+                ? "from-brand-yellow/30 to-brand-purple/40"
+                : "from-brand-black/40 to-brand-purple/30"
+            }`} />
+
+            {/* Tag badge */}
+            <div className="absolute top-3 left-3">
+              <span className={`text-xs font-bold px-2.5 py-1 rounded-full text-white ${tagColors[photo.tag] || "bg-brand-purple"}`}>
+                {photo.tag}
+              </span>
             </div>
-            
-            {/* Overlay on Hover */}
-            <div className="absolute inset-0 bg-brand-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
-              <p className="text-brand-white font-bold">{photo.title}</p>
+
+            {/* Hover overlay */}
+            <div className="absolute inset-0 bg-brand-black/75 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
+              <p className="text-white font-bold text-sm leading-snug">{photo.title}</p>
             </div>
           </div>
         ))}

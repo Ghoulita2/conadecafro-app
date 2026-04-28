@@ -63,8 +63,11 @@ export const DatabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     const saved = localStorage.getItem("conadecafro_resources");
     if (saved) {
       try {
+        // eslint-disable-next-line
         setResources(JSON.parse(saved));
-      } catch (e) {}
+      } catch {
+        // Ignorar error de parsing
+      }
     }
   }, []);
 

@@ -38,18 +38,20 @@ const Map: React.FC<MapProps> = ({ resources, selectedState }) => {
     : resources.filter((r) => r.state === selectedState);
 
   return (
-    <div className="h-full w-full rounded-lg overflow-hidden border border-gray-200 shadow-sm relative z-0">
+    <div className="w-full h-full rounded-lg shadow-md overflow-hidden border-2 border-brand-purple">
       <MapContainer
-        center={[7.8, -66.0]}
+        center={[7.5, -66.0]}
         zoom={6}
-        style={{ height: "100%", width: "100%" }}
-        scrollWheelZoom={true}
+        minZoom={5}
+        maxBounds={[[0.6, -73.3], [12.2, -59.8]]}
+        maxBoundsViscosity={1.0}
+        style={{ height: "100%", width: "100%", background: "#1a1a1a" }}
       >
-        <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
         <MapUpdater selectedState={selectedState} />
+        <TileLayer
+          attribution='&copy; <a href="https://carto.com/attributions">CARTO</a>'
+          url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+        />
         
         {filteredResources.map((resource) => (
           <Marker key={resource.id} position={[resource.lat, resource.lng]}>

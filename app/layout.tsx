@@ -16,8 +16,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Conadecafro - Portal WebGIS",
-  description: "Plataforma orientada al desarrollo, visibilización y centralización de recursos de las comunidades afrodescendientes en Venezuela.",
+  title: "Conadecafro — Consejo Nacional para el Desarrollo de las Comunidades Afrodescendientes",
+  description: "Portal oficial del Consejo Nacional para el Desarrollo de las Comunidades Afrodescendientes de Venezuela.",
 };
 
 export default function RootLayout({
@@ -27,7 +27,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es" className={`${geistSans.variable} ${geistMono.variable}`}>
-      <body className="min-h-screen bg-gray-50 flex flex-col font-sans text-brand-black">
+      <body className={`${geistSans.variable} ${geistMono.variable} min-h-screen bg-gray-50 flex flex-col antialiased`}>
         <DatabaseProvider>
           <Navbar />
           <div className="flex-grow flex flex-col">

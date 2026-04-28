@@ -47,17 +47,17 @@ export default function HistoriaPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-brand-black py-14 px-4 sm:px-6 text-brand-white">
+    <div className="min-h-screen bg-gray-50 py-14 px-4 sm:px-6">
       <div className="max-w-3xl mx-auto">
         {/* Header */}
         <div className="mb-12 text-center">
-          <span className="text-brand-yellow text-xs sm:text-sm font-bold tracking-widest uppercase border border-brand-yellow/40 px-4 py-1 rounded-full">
+          <span className="text-brand-purple text-xs sm:text-sm font-bold tracking-widest uppercase border border-brand-purple/30 px-4 py-1 rounded-full">
             Memoria Histórica
           </span>
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-brand-yellow mt-5 mb-4 leading-tight">
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-brand-purple mt-5 mb-4 leading-tight">
             Historia Afrovenezolana
           </h1>
-          <p className="text-gray-400 text-base sm:text-lg max-w-xl mx-auto leading-relaxed">
+          <p className="text-gray-500 text-base sm:text-lg max-w-xl mx-auto leading-relaxed">
             Un recorrido por los hitos que marcaron la lucha, resistencia y aportes de las comunidades afrodescendientes en Venezuela.
           </p>
         </div>
@@ -67,23 +67,23 @@ export default function HistoriaPage() {
           {events.map((event, idx) => (
             <div key={idx} className="relative pl-8 sm:pl-12">
               {/* Dot */}
-              <div className="absolute -left-[14px] top-1 h-6 w-6 rounded-full bg-brand-yellow border-4 border-brand-black ring-2 ring-brand-yellow/30" />
+              <div className="absolute -left-[14px] top-1 h-6 w-6 rounded-full bg-brand-yellow border-4 border-white ring-2 ring-brand-yellow/30" />
 
-              <div className={`bg-gray-900 p-5 sm:p-7 rounded-2xl shadow-xl border-l-4 ${event.color} hover:scale-[1.01] transition-transform`}>
+              <div className={`bg-white p-5 sm:p-7 rounded-2xl shadow-sm border border-gray-100 border-l-4 ${event.color} hover:shadow-md transition-shadow`}>
                 <div className="flex flex-wrap items-center gap-3 mb-3">
                   <span className={`text-xs font-black px-3 py-1 rounded-full ${event.badge}`}>
                     {event.year}
                   </span>
-                  <h3 className="text-base sm:text-xl font-bold leading-snug">{event.title}</h3>
+                  <h3 className="text-base sm:text-xl font-bold text-gray-900 leading-snug">{event.title}</h3>
                 </div>
-                <p className="text-gray-400 text-sm sm:text-base leading-relaxed">
+                <p className="text-gray-500 text-sm sm:text-base leading-relaxed">
                   {event.description}
                 </p>
               </div>
             </div>
           ))}
           {/* End dot */}
-          <div className="absolute -left-[14px] bottom-0 h-6 w-6 rounded-full bg-brand-purple border-4 border-brand-black" />
+          <div className="absolute -left-[14px] bottom-0 h-6 w-6 rounded-full bg-brand-purple border-4 border-white" />
         </div>
       </div>
     </div>

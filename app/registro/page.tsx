@@ -23,15 +23,15 @@ export default function RegistroPage() {
   }, [resources]);
 
   return (
-    <main className="flex-grow flex flex-col">
+    <main className="flex-grow flex flex-col bg-white">
       {/* Mobile toggle bar */}
-      <div className="md:hidden flex items-center justify-between bg-brand-black px-4 py-2 border-b border-brand-purple">
-        <span className="text-brand-white text-sm font-bold">
+      <div className="md:hidden flex items-center justify-between bg-brand-purple px-4 py-2 border-b border-purple-700">
+        <span className="text-white text-sm font-bold">
           {selectedState === "Todos" ? "Todos los estados" : selectedState}
         </span>
         <button
           onClick={() => setShowMap((v) => !v)}
-          className="flex items-center gap-2 bg-brand-purple text-white text-xs font-bold px-3 py-1.5 rounded-full"
+          className="flex items-center gap-2 bg-brand-yellow text-gray-900 text-xs font-black px-3 py-1.5 rounded-full"
         >
           {showMap ? <X size={14} /> : <Map size={14} />}
           {showMap ? "Ver lista" : "Ver mapa"}
@@ -39,7 +39,7 @@ export default function RegistroPage() {
       </div>
 
       {/* Desktop & Mobile layout */}
-      <div className="flex-grow flex flex-col md:flex-row gap-0 md:gap-4 md:p-4 overflow-hidden md:h-[calc(100vh-76px)]">
+      <div className="flex-grow flex flex-col md:flex-row gap-0 md:gap-5 md:p-5 overflow-hidden md:h-[calc(100vh-72px)]">
         {/* Sidebar — hidden on mobile when map is shown */}
         <aside className={`
           w-full md:w-80 lg:w-96 flex flex-col gap-3 overflow-y-auto

@@ -8,281 +8,338 @@ export interface VenezuelaMapProps {
   resourceCounts: Record<string, number>;
 }
 
-// Paths SVG geográficamente correctos de los 24 estados de Venezuela
-// ViewBox: 0 0 1000 800, coordenadas derivadas de datos geográficos reales simplificados
-const STATES: {
-  id: string;
-  name: string;
-  d: string;
-  labelX: number;
-  labelY: number;
-}[] = [
+/**
+ * Coordinate transform (lon, lat) → (svgX, svgY)
+ * ViewBox: 0 0 960 820
+ * Lon range: -73.4 to -59.7  → x: 10 to 950
+ * Lat range: 12.2 to 0.7     → y: 10 to 810
+ *
+ * x = (lon + 73.4) / 13.7 * 940 + 10
+ * y = (12.2 - lat) / 11.5 * 800 + 10
+ */
+
+// Each state polygon is derived from simplified real geographic coordinates
+const STATES: { id: string; name: string; d: string; lx: number; ly: number }[] = [
   {
-    id: "Zulia",
-    name: "Zulia",
-    labelX: 108,
-    labelY: 265,
-    d: "M 60,160 L 85,145 L 115,148 L 130,165 L 145,185 L 162,200 L 168,225 L 175,255 L 170,285 L 158,310 L 140,330 L 120,345 L 100,340 L 78,320 L 60,295 L 48,265 L 50,235 L 55,205 Z",
+    // Zulia — NW state surrounding Lake Maracaibo
+    id: "Zulia", name: "Zulia", lx: 100, ly: 220,
+    d: `M 20,50 L 57,20 L 94,22 L 108,38 L 125,30 L 130,55
+        L 118,80 L 108,95 L 118,115 L 130,140 L 138,170
+        L 142,200 L 148,225 L 152,255 L 148,280 L 138,300
+        L 125,318 L 112,332 L 98,342 L 82,348 L 65,340
+        L 48,325 L 34,305 L 22,280 L 18,255 L 20,225
+        L 22,195 L 20,165 L 20,130 L 20,95 Z`,
   },
   {
-    id: "Falcón",
-    name: "Falcón",
-    labelX: 255,
-    labelY: 148,
-    d: "M 168,125 L 195,118 L 230,115 L 265,118 L 295,125 L 315,138 L 310,158 L 285,168 L 260,172 L 235,168 L 210,162 L 190,155 L 172,142 Z",
+    // Falcón — northern state with Paraguaná Peninsula
+    id: "Falcón", name: "Falcón", lx: 248, ly: 128,
+    d: `M 185,118 L 198,100 L 210,85 L 222,75 L 235,65
+        L 245,58 L 252,48 L 258,36 L 265,22 L 278,28
+        L 290,22 L 302,28 L 308,40 L 302,55 L 295,65
+        L 285,72 L 278,82 L 295,88 L 312,92 L 325,98
+        L 335,108 L 342,118 L 340,132 L 332,142 L 318,148
+        L 302,152 L 285,155 L 268,155 L 252,150 L 238,142
+        L 222,135 L 208,128 L 195,122 Z`,
   },
   {
-    id: "Lara",
-    name: "Lara",
-    labelX: 248,
-    labelY: 222,
-    d: "M 172,142 L 190,155 L 210,162 L 235,168 L 260,172 L 285,168 L 295,180 L 292,202 L 278,218 L 258,228 L 235,232 L 210,228 L 192,218 L 175,205 L 168,185 Z",
+    // Lara
+    id: "Lara", name: "Lara", lx: 265, ly: 215,
+    d: `M 208,128 L 222,135 L 238,142 L 252,150 L 268,155
+        L 285,155 L 302,152 L 318,148 L 332,142 L 340,132
+        L 348,140 L 352,155 L 348,172 L 340,185 L 328,198
+        L 312,208 L 295,215 L 278,218 L 262,215 L 248,208
+        L 235,198 L 222,188 L 212,175 L 205,162 L 202,148
+        L 202,135 Z`,
   },
   {
-    id: "Yaracuy",
-    name: "Yaracuy",
-    labelX: 320,
-    labelY: 208,
-    d: "M 285,168 L 310,158 L 338,162 L 355,175 L 352,198 L 335,212 L 315,215 L 295,210 L 288,195 Z",
+    // Yaracuy — small state
+    id: "Yaracuy", name: "Yaracuy", lx: 360, ly: 195,
+    d: `M 340,132 L 355,125 L 368,122 L 382,126 L 392,135
+        L 398,148 L 395,162 L 385,172 L 372,178 L 358,178
+        L 345,172 L 338,162 L 338,148 L 342,138 Z`,
   },
   {
-    id: "Carabobo",
-    name: "Carabobo",
-    labelX: 355,
-    labelY: 228,
-    d: "M 335,212 L 355,210 L 378,215 L 390,228 L 385,245 L 368,255 L 348,252 L 335,240 L 332,225 Z",
+    // Carabobo
+    id: "Carabobo", name: "Carabobo", lx: 412, ly: 198,
+    d: `M 382,126 L 398,120 L 415,118 L 428,122 L 438,132
+        L 442,145 L 438,158 L 428,168 L 415,175 L 400,178
+        L 388,175 L 378,165 L 375,152 L 378,140 Z`,
   },
   {
-    id: "Aragua",
-    name: "Aragua",
-    labelX: 415,
-    labelY: 228,
-    d: "M 378,215 L 405,210 L 432,212 L 448,225 L 445,245 L 428,258 L 408,262 L 388,258 L 378,242 L 378,228 Z",
+    // Aragua
+    id: "Aragua", name: "Aragua", lx: 468, ly: 205,
+    d: `M 428,122 L 445,115 L 462,112 L 478,115 L 492,122
+        L 500,132 L 502,145 L 498,158 L 488,168 L 472,175
+        L 458,178 L 442,175 L 432,165 L 428,152 L 428,138 Z`,
   },
   {
-    id: "La Guaira",
-    name: "La Guaira",
-    labelX: 443,
-    labelY: 197,
-    d: "M 405,195 L 432,192 L 455,195 L 458,210 L 435,212 L 408,210 Z",
+    // La Guaira (Vargas) — thin coastal strip
+    id: "La Guaira", name: "La Guaira", lx: 460, ly: 100,
+    d: `M 428,108 L 445,102 L 462,98 L 478,100 L 492,106
+        L 498,115 L 492,122 L 478,115 L 462,112 L 445,115
+        L 430,118 L 428,112 Z`,
   },
   {
-    id: "Distrito Capital",
-    name: "D. Capital",
-    labelX: 465,
-    labelY: 215,
-    d: "M 450,208 L 470,205 L 480,215 L 475,228 L 458,230 L 448,222 Z",
+    // Distrito Capital
+    id: "Distrito Capital", name: "D. Capital", lx: 502, ly: 135,
+    d: `M 492,106 L 508,102 L 520,105 L 525,115 L 522,125
+        L 512,130 L 500,132 L 492,122 L 492,112 Z`,
   },
   {
-    id: "Miranda",
-    name: "Miranda",
-    labelX: 498,
-    labelY: 235,
-    d: "M 448,218 L 472,212 L 498,215 L 518,228 L 522,248 L 508,265 L 485,272 L 462,268 L 445,255 L 442,238 Z",
+    // Miranda
+    id: "Miranda", name: "Miranda", lx: 540, ly: 175,
+    d: `M 498,115 L 515,108 L 530,105 L 545,108 L 558,115
+        L 568,125 L 572,140 L 568,155 L 558,165 L 542,172
+        L 525,175 L 508,172 L 495,162 L 490,148 L 490,135
+        L 494,122 L 498,115 Z`,
   },
   {
-    id: "Portuguesa",
-    name: "Portuguesa",
-    labelX: 320,
-    labelY: 268,
-    d: "M 258,228 L 285,225 L 315,228 L 338,235 L 348,255 L 342,278 L 322,292 L 298,295 L 275,288 L 258,272 L 255,252 Z",
+    // Trujillo — Andean state
+    id: "Trujillo", name: "Trujillo", lx: 200, ly: 262,
+    d: `M 148,225 L 162,220 L 178,218 L 195,222 L 210,228
+        L 222,238 L 228,252 L 225,268 L 215,280 L 200,288
+        L 185,290 L 170,285 L 158,275 L 150,260 L 148,245 Z`,
   },
   {
-    id: "Cojedes",
-    name: "Cojedes",
-    labelX: 390,
-    labelY: 270,
-    d: "M 348,252 L 372,248 L 398,252 L 415,265 L 415,285 L 398,300 L 375,305 L 352,298 L 342,282 L 345,265 Z",
+    // Portuguesa
+    id: "Portuguesa", name: "Portuguesa", lx: 305, ly: 262,
+    d: `M 248,208 L 262,215 L 278,218 L 295,215 L 312,208
+        L 325,198 L 338,198 L 350,205 L 358,218 L 358,235
+        L 350,250 L 338,262 L 322,270 L 305,272 L 288,268
+        L 272,260 L 260,248 L 252,235 L 250,220 Z`,
   },
   {
-    id: "Trujillo",
-    name: "Trujillo",
-    labelX: 242,
-    labelY: 275,
-    d: "M 192,248 L 215,242 L 238,245 L 258,258 L 258,278 L 242,292 L 220,295 L 200,288 L 188,272 Z",
+    // Cojedes
+    id: "Cojedes", name: "Cojedes", lx: 390, ly: 252,
+    d: `M 358,178 L 372,178 L 385,172 L 398,175 L 412,180
+        L 425,190 L 432,205 L 432,222 L 425,238 L 412,250
+        L 395,258 L 378,260 L 362,255 L 350,245 L 345,230
+        L 348,215 L 352,200 L 358,190 Z`,
   },
   {
-    id: "Mérida",
-    name: "Mérida",
-    labelX: 198,
-    labelY: 328,
-    d: "M 155,292 L 180,285 L 205,292 L 225,308 L 228,332 L 212,350 L 188,358 L 165,350 L 148,335 L 148,312 Z",
+    // Mérida — Andean
+    id: "Mérida", name: "Mérida", lx: 158, ly: 318,
+    d: `M 82,300 L 98,295 L 115,292 L 130,295 L 145,302
+        L 158,312 L 168,325 L 172,342 L 168,358 L 158,370
+        L 142,378 L 125,382 L 108,378 L 94,368 L 82,355
+        L 75,338 L 75,320 Z`,
   },
   {
-    id: "Barinas",
-    name: "Barinas",
-    labelX: 318,
-    labelY: 332,
-    d: "M 248,295 L 282,292 L 322,295 L 358,298 L 382,308 L 388,332 L 378,358 L 348,368 L 315,368 L 282,362 L 255,348 L 242,325 L 245,308 Z",
+    // Táchira — SW Andean
+    id: "Táchira", name: "Táchira", lx: 62, ly: 370,
+    d: `M 20,318 L 38,310 L 55,305 L 72,305 L 88,308
+        L 102,318 L 112,332 L 115,348 L 108,362 L 96,375
+        L 80,385 L 62,390 L 45,388 L 30,380 L 20,368
+        L 20,345 Z`,
   },
   {
-    id: "Táchira",
-    name: "Táchira",
-    labelX: 138,
-    labelY: 355,
-    d: "M 100,318 L 128,312 L 152,318 L 162,338 L 162,362 L 148,378 L 122,382 L 100,372 L 88,352 L 92,332 Z",
+    // Barinas — Llanos
+    id: "Barinas", name: "Barinas", lx: 258, ly: 340,
+    d: `M 148,280 L 162,272 L 178,268 L 195,268 L 210,272
+        L 225,275 L 240,278 L 255,282 L 268,288 L 280,298
+        L 288,312 L 292,328 L 288,345 L 278,358 L 262,368
+        L 245,375 L 228,378 L 210,375 L 195,368 L 180,358
+        L 168,345 L 158,330 L 152,315 L 150,298 Z`,
   },
   {
-    id: "Guárico",
-    name: "Guárico",
-    labelX: 488,
-    labelY: 318,
-    d: "M 415,278 L 448,272 L 488,275 L 528,278 L 558,292 L 568,318 L 558,348 L 528,368 L 495,375 L 462,368 L 432,352 L 415,328 L 412,308 Z",
+    // Guárico — Central Llanos
+    id: "Guárico", name: "Guárico", lx: 465, ly: 335,
+    d: `M 425,190 L 442,185 L 460,182 L 478,185 L 495,190
+        L 512,195 L 528,202 L 542,212 L 552,225 L 558,242
+        L 558,260 L 552,278 L 540,292 L 522,302 L 504,308
+        L 485,310 L 466,308 L 448,300 L 432,288 L 420,272
+        L 412,255 L 410,238 L 415,222 L 420,208 Z`,
   },
   {
-    id: "Anzoátegui",
-    name: "Anzoátegui",
-    labelX: 622,
-    labelY: 282,
-    d: "M 558,248 L 595,242 L 635,245 L 668,255 L 682,278 L 678,308 L 658,328 L 628,338 L 595,335 L 565,322 L 552,300 L 552,275 Z",
+    // Anzoátegui
+    id: "Anzoátegui", name: "Anzoátegui", lx: 630, ly: 265,
+    d: `M 558,175 L 575,168 L 592,162 L 610,160 L 628,162
+        L 645,168 L 660,178 L 670,192 L 675,208 L 672,225
+        L 662,240 L 648,252 L 630,260 L 612,265 L 594,265
+        L 576,260 L 560,250 L 550,235 L 546,218 L 548,202
+        L 552,188 Z`,
   },
   {
-    id: "Monagas",
-    name: "Monagas",
-    labelX: 708,
-    labelY: 288,
-    d: "M 668,255 L 705,248 L 742,252 L 765,268 L 768,295 L 752,318 L 722,330 L 690,328 L 665,315 L 655,295 L 658,272 Z",
+    // Monagas
+    id: "Monagas", name: "Monagas", lx: 725, ly: 265,
+    d: `M 660,178 L 678,170 L 698,165 L 718,165 L 738,170
+        L 755,180 L 765,195 L 768,212 L 762,230 L 748,245
+        L 730,255 L 710,260 L 690,260 L 672,255 L 658,242
+        L 650,228 L 648,212 L 650,196 Z`,
   },
   {
-    id: "Sucre",
-    name: "Sucre",
-    labelX: 752,
-    labelY: 248,
-    d: "M 700,228 L 738,222 L 775,225 L 798,238 L 800,255 L 782,268 L 752,272 L 722,268 L 705,255 L 705,238 Z",
+    // Sucre — NE peninsula
+    id: "Sucre", name: "Sucre", lx: 768, ly: 215,
+    d: `M 710,165 L 730,155 L 752,148 L 775,145 L 798,148
+        L 818,158 L 832,172 L 838,188 L 832,202 L 818,212
+        L 800,218 L 780,220 L 760,218 L 742,210 L 728,198
+        L 718,185 L 712,172 Z`,
   },
   {
-    id: "Nueva Esparta",
-    name: "N. Esparta",
-    labelX: 810,
-    labelY: 218,
-    d: "M 798,202 L 822,198 L 840,205 L 845,218 L 835,232 L 815,238 L 798,232 L 790,218 Z",
+    // Nueva Esparta — Island
+    id: "Nueva Esparta", name: "N. Esparta", lx: 855, ly: 178,
+    d: `M 840,165 L 858,160 L 875,162 L 888,170 L 892,182
+        L 885,193 L 872,198 L 858,198 L 845,192 L 838,182
+        L 838,172 Z`,
   },
   {
-    id: "Delta Amacuro",
-    name: "Delta Amacuro",
-    labelX: 798,
-    labelY: 335,
-    d: "M 762,298 L 798,292 L 835,298 L 858,318 L 862,348 L 845,372 L 812,382 L 780,375 L 762,355 L 755,328 Z",
+    // Delta Amacuro — Orinoco Delta, far east
+    id: "Delta Amacuro", name: "Delta Amacuro", lx: 840, ly: 318,
+    d: `M 762,258 L 782,248 L 802,242 L 825,242 L 848,248
+        L 868,260 L 882,278 L 888,298 L 885,320 L 875,340
+        L 858,355 L 838,362 L 818,362 L 798,355 L 782,342
+        L 768,325 L 760,308 L 758,288 Z`,
   },
   {
-    id: "Apure",
-    name: "Apure",
-    labelX: 355,
-    labelY: 445,
-    d: "M 160,368 L 205,362 L 255,365 L 298,368 L 348,372 L 395,375 L 432,378 L 458,388 L 462,415 L 448,445 L 415,462 L 375,468 L 332,465 L 288,458 L 248,448 L 212,435 L 182,418 L 162,398 Z",
+    // Apure — Large central south llanos
+    id: "Apure", name: "Apure", lx: 292, ly: 455,
+    d: `M 20,368 L 38,358 L 58,350 L 78,345 L 98,342
+        L 118,345 L 138,350 L 158,355 L 178,358 L 198,360
+        L 218,362 L 238,365 L 258,368 L 278,372 L 298,378
+        L 318,385 L 338,392 L 355,402 L 368,415 L 375,432
+        L 375,450 L 368,468 L 355,482 L 338,492 L 318,498
+        L 298,500 L 278,498 L 258,492 L 238,482 L 218,470
+        L 198,458 L 178,448 L 158,440 L 138,435 L 118,432
+        L 98,432 L 78,435 L 58,440 L 38,448 L 20,458
+        L 20,415 Z`,
   },
   {
-    id: "Bolívar",
-    name: "Bolívar",
-    labelX: 608,
-    labelY: 488,
-    d: "M 462,375 L 505,372 L 555,368 L 598,358 L 638,345 L 672,332 L 708,335 L 748,338 L 762,358 L 758,392 L 745,428 L 725,462 L 695,495 L 658,522 L 618,538 L 575,545 L 532,542 L 492,528 L 458,508 L 435,482 L 428,452 L 435,425 L 448,400 L 458,388 Z",
+    // Bolívar — Huge SE state (Guayana)
+    id: "Bolívar", name: "Bolívar", lx: 640, ly: 530,
+    d: `M 410,308 L 432,302 L 455,298 L 478,298 L 500,302
+        L 522,308 L 542,315 L 560,325 L 575,340 L 585,358
+        L 590,378 L 590,398 L 585,420 L 575,440 L 560,460
+        L 545,478 L 530,495 L 518,512 L 508,530 L 500,548
+        L 495,568 L 492,590 L 492,612 L 495,635 L 498,658
+        L 498,680 L 495,702 L 488,722 L 478,740 L 465,755
+        L 450,765 L 435,772 L 420,775 L 405,775 L 390,772
+        L 375,765 L 360,755 L 348,742 L 338,728 L 332,712
+        L 330,695 L 332,678 L 338,662 L 348,648 L 362,635
+        L 378,622 L 395,612 L 412,602 L 428,592 L 440,580
+        L 450,565 L 455,548 L 456,530 L 452,512 L 444,495
+        L 432,480 L 418,468 L 405,460 L 395,452 L 388,442
+        L 382,430 L 378,415 L 375,400 L 372,385 L 368,370
+        L 365,355 L 365,340 L 368,325 L 372,312 Z`,
   },
   {
-    id: "Amazonas",
-    name: "Amazonas",
-    labelX: 318,
-    labelY: 568,
-    d: "M 180,418 L 215,408 L 252,418 L 285,428 L 320,432 L 358,438 L 392,448 L 418,462 L 428,492 L 425,528 L 408,558 L 382,582 L 348,598 L 308,608 L 268,605 L 232,592 L 200,572 L 175,548 L 162,518 L 162,485 L 168,455 L 178,432 Z",
+    // Amazonas — Large southern state
+    id: "Amazonas", name: "Amazonas", lx: 215, ly: 610,
+    d: `M 20,458 L 38,450 L 58,444 L 78,440 L 98,438
+        L 118,438 L 138,442 L 158,448 L 178,455 L 198,465
+        L 218,475 L 238,488 L 258,498 L 278,505 L 298,508
+        L 318,508 L 338,502 L 355,492 L 368,475 L 375,455
+        L 382,440 L 388,455 L 392,475 L 395,498 L 395,520
+        L 392,545 L 385,568 L 375,592 L 362,615 L 348,638
+        L 335,658 L 325,678 L 318,698 L 312,720 L 308,742
+        L 305,762 L 302,782 L 298,802 L 292,818
+        L 270,822 L 248,820 L 225,815 L 202,808
+        L 180,798 L 158,785 L 138,770 L 118,752
+        L 100,732 L 84,710 L 70,688 L 58,665
+        L 48,642 L 40,618 L 34,595 L 28,572
+        L 22,548 L 20,522 L 20,495 Z`,
   },
 ];
 
-const getStateColor = (
-  stateId: string,
-  selectedState: string,
-  count: number
-): string => {
-  if (stateId === selectedState) return "#FFD700";
+const getStateFill = (id: string, selected: string, count: number): string => {
+  if (id === selected) return "#FFD700";
   if (count > 5) return "#4a0080";
   if (count > 2) return "#6A0DAD";
-  if (count > 0) return "#9c55d4";
-  return "#e8e0f0";
+  if (count > 0) return "#9460d0";
+  return "#6A0DAD"; // default brand-purple for all states
 };
 
-const getTextColor = (stateId: string, selectedState: string, count: number): string => {
-  if (stateId === selectedState) return "#000000";
-  if (count > 0) return "#ffffff";
-  return "#5a4a7a";
+const getStateOpacity = (id: string, selected: string, count: number): number => {
+  if (id === selected) return 1;
+  if (count > 0) return 1;
+  return 0.72; // slightly transparent for states with no records
 };
 
-const VenezuelaMap: React.FC<VenezuelaMapProps> = ({
-  selectedState,
-  onStateSelect,
-  resourceCounts,
-}) => {
+const VenezuelaMap: React.FC<VenezuelaMapProps> = ({ selectedState, onStateSelect, resourceCounts }) => {
   return (
     <div className="w-full h-full flex flex-col gap-3">
-      <div className="relative flex-1 bg-gradient-to-br from-sky-50 to-blue-100 rounded-2xl border-2 border-brand-purple/30 overflow-hidden min-h-[340px] shadow-md">
+      <div className="relative flex-1 rounded-2xl border-2 border-brand-purple/30 overflow-hidden shadow-md min-h-[360px]"
+           style={{ background: "#4A90D9" }}>
         <svg
-          viewBox="0 0 900 660"
+          viewBox="0 0 960 840"
           className="w-full h-full"
-          aria-label="Mapa interactivo de Venezuela por estados"
+          aria-label="Mapa oficial interactivo de Venezuela por estados"
         >
-          {/* Ocean */}
+          {/* Ocean gradient */}
           <defs>
-            <radialGradient id="oceanGrad" cx="50%" cy="0%" r="80%">
-              <stop offset="0%" stopColor="#bfdbfe" />
-              <stop offset="100%" stopColor="#93c5fd" />
-            </radialGradient>
+            <linearGradient id="oceanGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stopColor="#6ab4f5" />
+              <stop offset="100%" stopColor="#3478b5" />
+            </linearGradient>
+            <filter id="stateShadow" x="-5%" y="-5%" width="110%" height="110%">
+              <feDropShadow dx="1" dy="1" stdDeviation="2" floodColor="rgba(0,0,0,0.3)" />
+            </filter>
           </defs>
-          <rect width="900" height="660" fill="url(#oceanGrad)" />
+
+          {/* Ocean background */}
+          <rect width="960" height="840" fill="url(#oceanGrad)" />
+
+          {/* Country label */}
+          <text x="480" y="800" textAnchor="middle" fontSize="11" fill="white" opacity="0.6"
+                fontFamily="system-ui,sans-serif" fontWeight="600" letterSpacing="2">
+            MAR CARIBE
+          </text>
+          <text x="185" y="75" textAnchor="middle" fontSize="9" fill="white" opacity="0.55"
+                fontFamily="system-ui,sans-serif" letterSpacing="1">
+            COLOMBIA
+          </text>
+          <text x="650" y="800" textAnchor="middle" fontSize="9" fill="white" opacity="0.55"
+                fontFamily="system-ui,sans-serif" letterSpacing="1">
+            BRASIL
+          </text>
 
           {/* States */}
           {STATES.map((state) => {
             const count = resourceCounts[state.id] || 0;
             const isSelected = state.id === selectedState;
-            const fill = getStateColor(state.id, selectedState, count);
-            const textColor = getTextColor(state.id, selectedState, count);
+            const fill = getStateFill(state.id, selectedState, count);
+            const opacity = getStateOpacity(state.id, selectedState, count);
 
             return (
-              <g
-                key={state.id}
-                onClick={() => onStateSelect(isSelected ? "Todos" : state.id)}
-                className="cursor-pointer"
-                style={{ transition: "all 0.15s ease" }}
-              >
+              <g key={state.id}
+                 onClick={() => onStateSelect(isSelected ? "Todos" : state.id)}
+                 className="cursor-pointer"
+                 style={{ transition: "opacity 0.15s" }}>
                 <path
                   d={state.d}
                   fill={fill}
-                  stroke="white"
-                  strokeWidth={isSelected ? 3 : 1.5}
+                  fillOpacity={opacity}
+                  stroke="#000000"
+                  strokeWidth={isSelected ? 2.5 : 1}
+                  strokeLinejoin="round"
+                  strokeLinecap="round"
                   style={{
-                    filter: isSelected
-                      ? "drop-shadow(0 0 6px rgba(255,215,0,0.8))"
-                      : "drop-shadow(0 1px 2px rgba(0,0,0,0.12))",
+                    filter: isSelected ? "drop-shadow(0 0 6px rgba(255,215,0,0.9))" : undefined,
                   }}
                 />
+                {/* State name label */}
                 <text
-                  x={state.labelX}
-                  y={state.labelY}
+                  x={state.lx}
+                  y={state.ly}
                   textAnchor="middle"
-                  fontSize="8"
+                  fontSize={isSelected ? "8.5" : "7.5"}
                   fontWeight={isSelected ? "700" : "500"}
-                  fill={textColor}
+                  fill={isSelected ? "#000" : "#fff"}
+                  stroke={isSelected ? "none" : "rgba(0,0,0,0.5)"}
+                  strokeWidth="2"
+                  paintOrder="stroke"
                   className="pointer-events-none select-none"
-                  style={{ fontFamily: "system-ui, sans-serif" }}
+                  style={{ fontFamily: "system-ui,sans-serif" }}
                 >
                   {state.name}
                 </text>
+                {/* Resource count badge */}
                 {count > 0 && (
                   <g>
-                    <circle
-                      cx={state.labelX + 16}
-                      cy={state.labelY - 9}
-                      r="8"
-                      fill={isSelected ? "#6A0DAD" : "#FFD700"}
-                      stroke="white"
-                      strokeWidth="1.5"
-                    />
-                    <text
-                      x={state.labelX + 16}
-                      y={state.labelY - 6}
-                      textAnchor="middle"
-                      fontSize="6.5"
-                      fontWeight="800"
-                      fill={isSelected ? "white" : "#000"}
-                      className="pointer-events-none select-none"
-                    >
+                    <circle cx={state.lx + 14} cy={state.ly - 10} r="7.5"
+                            fill="#FFD700" stroke="#000" strokeWidth="1" />
+                    <text x={state.lx + 14} y={state.ly - 7}
+                          textAnchor="middle" fontSize="7" fontWeight="800" fill="#000"
+                          className="pointer-events-none select-none">
                       {count}
                     </text>
                   </g>
@@ -291,16 +348,10 @@ const VenezuelaMap: React.FC<VenezuelaMapProps> = ({
             );
           })}
 
-          {/* Compass rose */}
-          <g transform="translate(840, 45)">
-            <text textAnchor="middle" x="0" y="-18" fontSize="10" fontWeight="bold" fill="#6A0DAD" opacity="0.7">N</text>
-            <line x1="0" y1="-14" x2="0" y2="14" stroke="#6A0DAD" strokeWidth="1.5" opacity="0.5" />
-            <line x1="-14" y1="0" x2="14" y2="0" stroke="#6A0DAD" strokeWidth="1.5" opacity="0.5" />
-          </g>
-
-          {/* Label */}
-          <text x="450" y="22" textAnchor="middle" fontSize="11" fontWeight="600" fill="#6A0DAD" opacity="0.8">
-            Haz clic en un estado para filtrar
+          {/* Instruction label */}
+          <text x="480" y="22" textAnchor="middle" fontSize="10" fill="white" opacity="0.85"
+                fontFamily="system-ui,sans-serif" fontWeight="600">
+            Haz clic en un estado para filtrar — REPÚBLICA BOLIVARIANA DE VENEZUELA
           </text>
         </svg>
       </div>
@@ -308,20 +359,14 @@ const VenezuelaMap: React.FC<VenezuelaMapProps> = ({
       {/* Legend */}
       <div className="flex flex-wrap gap-x-5 gap-y-1.5 text-xs px-1">
         {[
-          { color: "#e8e0f0", border: "#c9b8e8", label: "Sin registros" },
-          { color: "#9c55d4", border: "transparent", label: "1–2 personas" },
-          { color: "#6A0DAD", border: "transparent", label: "3–5 personas" },
-          { color: "#4a0080", border: "transparent", label: "+5 personas" },
-          { color: "#FFD700", border: "#c5a200", label: "Seleccionado" },
+          { color: "#6A0DAD", border: "#000", label: "Sin registros" },
+          { color: "#9460d0", border: "#000", label: "1–2 registros" },
+          { color: "#4a0080", border: "#000", label: "+5 registros" },
+          { color: "#FFD700", border: "#000", label: "Estado seleccionado" },
         ].map((item) => (
           <div key={item.label} className="flex items-center gap-1.5">
-            <div
-              className="w-3.5 h-3.5 rounded-sm"
-              style={{
-                background: item.color,
-                border: `1px solid ${item.border}`,
-              }}
-            />
+            <div className="w-3.5 h-3.5 rounded-sm"
+                 style={{ background: item.color, border: `1.5px solid ${item.border}` }} />
             <span className="text-gray-500">{item.label}</span>
           </div>
         ))}

@@ -97,13 +97,14 @@ function MapInner({ selectedState, onStateSelect, resourceCounts }: VenezuelaMap
     const stateName = normalizeState(feature?.properties?.ESTADO ?? "");
     const count = resourceCounts[stateName] ?? 0;
 
-    // Tooltip
+    // Tooltip permanente para el nombre
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (layer as any).bindTooltip(
-      `<div style="font-family:system-ui;font-size:13px;font-weight:700;color:#3b0764;padding:4px 8px">
-        ${stateName}${count > 0 ? ` &nbsp;<span style="background:#FFD700;color:#000;border-radius:9999px;padding:1px 7px;font-size:11px">●${count}</span>` : ""}
+      `<div class="state-label-content">
+        <span class="state-name">${stateName}</span>
+        ${count > 0 ? `<span class="state-count">●${count}</span>` : ""}
       </div>`,
-      { sticky: true, opacity: 1, className: "custom-tooltip" }
+      { permanent: true, direction: "center", className: "state-label-tooltip", opacity: 0.95 }
     );
 
     // Click para filtrar
@@ -122,16 +123,21 @@ function MapInner({ selectedState, onStateSelect, resourceCounts }: VenezuelaMap
     });
   };
 
+  // Ajuste de zoom responsivo inicial
+  const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
+  const initialZoom = isMobile ? 5 : 6;
+  const minHeight = isMobile ? 450 : 360;
+
   return (
     <div className="w-full h-full flex flex-col gap-3">
       {/* Mapa */}
       <div
-        className="relative flex-1 rounded-2xl border-2 border-brand-purple/30 overflow-hidden shadow-md min-h-[360px]"
-        style={{ minHeight: 360 }}
+        className="relative flex-1 rounded-2xl border-2 border-brand-purple/30 overflow-hidden shadow-md"
+        style={{ minHeight }}
       >
         <MapContainer
-          center={[8.0, -66.0]}
-          zoom={6}
+          center={[7.5, -66.0]} // Un poco más al sur para centrar en móviles
+          zoom={initialZoom}
           zoomControl={false}
           minZoom={5}
           maxZoom={10}

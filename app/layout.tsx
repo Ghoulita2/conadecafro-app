@@ -4,6 +4,7 @@ import "leaflet/dist/leaflet.css";
 import "./globals.css";
 import { DatabaseProvider } from "../context/DatabaseContext";
 import { Navbar } from "../components/layout/Navbar";
+import { Footer } from "../components/layout/Footer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,6 +34,7 @@ export default function RootLayout({
           <div className="flex-grow flex flex-col">
             {children}
           </div>
+          <Footer />
         </DatabaseProvider>
       </body>
     </html>

@@ -17,3 +17,41 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+  
+/* Leaflet Permanent Tooltips */  
+.state-label-tooltip {  
+  background: transparent !important;  
+  border: none !important;  
+  box-shadow: none !important;  
+  pointer-events: none;  
+}  
+.state-label-tooltip::before {  
+  display: none !important;  
+}  
+.state-label-content {  
+  display: flex;  
+  flex-direction: column;  
+  align-items: center;  
+  font-family: system-ui;  
+  text-shadow: 1px 1px 0px #fff, -1px 1px 0px #fff, 1px -1px 0px #fff, -1px -1px 0px #fff, 0px 0px 3px rgba(255,255,255,0.8);  
+}  
+.state-name {  
+  font-size: 11px;  
+  font-weight: 800;  
+  color: #3b0764;  
+  line-height: 1;  
+}  
+.state-count {  
+  background: #FFD700;  
+  color: #000;  
+  border-radius: 9999px;  
+  padding: 1px 5px;  
+  font-size: 9px;  
+  font-weight: 700;  
+  margin-top: 2px;  
+  box-shadow: 0 1px 2px rgba(0,0,0,0.2);  
+}  
+@media (max-width: 768px) {  
+  .state-name { font-size: 8.5px; }  
+  .state-count { font-size: 8px; padding: 1px 4px; }  
+}

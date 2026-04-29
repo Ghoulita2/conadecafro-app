@@ -24,12 +24,12 @@ export const Navbar: React.FC = () => {
         {/* Logo */}
         <Link href="/" className="flex items-center flex-shrink-0" onClick={() => setMenuOpen(false)}>
           <Image
-            src="https://conadecafro.wordpress.com/wp-content/uploads/2016/04/logo-conadecafro-completo.png"
+            src="/logo-principal.png"
             alt="Conadecafro"
-            width={180}
-            height={55}
-            className="h-10 w-auto object-contain"
-            unoptimized
+            width={240}
+            height={70}
+            className="h-12 w-auto object-contain"
+            priority
           />
         </Link>
 

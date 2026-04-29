@@ -141,8 +141,16 @@ export default function Home() {
           {/* Efemérides */}
           <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
             <h3 className="font-black text-gray-800 mb-4 border-b border-gray-100 pb-2 text-sm uppercase tracking-wider flex items-center gap-2">
-              <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 text-brand-purple">
-                <path d="M8.5 13.5v-7A1.5 1.5 0 0 1 10 5a1.5 1.5 0 0 1 1.5 1.5v6M11.5 12V4A1.5 1.5 0 0 1 13 2.5 1.5 1.5 0 0 1 14.5 4v8M14.5 12V5.5A1.5 1.5 0 0 1 16 4a1.5 1.5 0 0 1 1.5 1.5v7M17.5 12v-1.5A1.5 1.5 0 0 1 19 9a1.5 1.5 0 0 1 1.5 1.5V15c0 4-2 7-6 7H9c-4 0-6-3-6-7v-3A1.5 1.5 0 0 1 4.5 10.5 1.5 1.5 0 0 1 6 12v2.5M6 14.5v-6A1.5 1.5 0 0 1 7.5 7 1.5 1.5 0 0 1 9 8.5v5"/>
+              <svg viewBox="0 0 32 32" fill="currentColor" className="w-5 h-5 text-brand-purple">
+                <g opacity="0.6" transform="translate(-6, 8) scale(0.7) rotate(-15 12 12)">
+                  <path d="M8.5 13.5v-7A1.5 1.5 0 0 1 10 5a1.5 1.5 0 0 1 1.5 1.5v6M11.5 12V4A1.5 1.5 0 0 1 13 2.5 1.5 1.5 0 0 1 14.5 4v8M14.5 12V5.5A1.5 1.5 0 0 1 16 4a1.5 1.5 0 0 1 1.5 1.5v7M17.5 12v-1.5A1.5 1.5 0 0 1 19 9a1.5 1.5 0 0 1 1.5 1.5V15c0 4-2 7-6 7H9c-4 0-6-3-6-7v-3A1.5 1.5 0 0 1 4.5 10.5 1.5 1.5 0 0 1 6 12v2.5M6 14.5v-6A1.5 1.5 0 0 1 7.5 7 1.5 1.5 0 0 1 9 8.5v5"/>
+                </g>
+                <g opacity="0.6" transform="translate(15, 8) scale(0.7) rotate(15 12 12)">
+                  <path d="M8.5 13.5v-7A1.5 1.5 0 0 1 10 5a1.5 1.5 0 0 1 1.5 1.5v6M11.5 12V4A1.5 1.5 0 0 1 13 2.5 1.5 1.5 0 0 1 14.5 4v8M14.5 12V5.5A1.5 1.5 0 0 1 16 4a1.5 1.5 0 0 1 1.5 1.5v7M17.5 12v-1.5A1.5 1.5 0 0 1 19 9a1.5 1.5 0 0 1 1.5 1.5V15c0 4-2 7-6 7H9c-4 0-6-3-6-7v-3A1.5 1.5 0 0 1 4.5 10.5 1.5 1.5 0 0 1 6 12v2.5M6 14.5v-6A1.5 1.5 0 0 1 7.5 7 1.5 1.5 0 0 1 9 8.5v5"/>
+                </g>
+                <g transform="translate(4, 2) scale(0.9)">
+                  <path d="M8.5 13.5v-7A1.5 1.5 0 0 1 10 5a1.5 1.5 0 0 1 1.5 1.5v6M11.5 12V4A1.5 1.5 0 0 1 13 2.5 1.5 1.5 0 0 1 14.5 4v8M14.5 12V5.5A1.5 1.5 0 0 1 16 4a1.5 1.5 0 0 1 1.5 1.5v7M17.5 12v-1.5A1.5 1.5 0 0 1 19 9a1.5 1.5 0 0 1 1.5 1.5V15c0 4-2 7-6 7H9c-4 0-6-3-6-7v-3A1.5 1.5 0 0 1 4.5 10.5 1.5 1.5 0 0 1 6 12v2.5M6 14.5v-6A1.5 1.5 0 0 1 7.5 7 1.5 1.5 0 0 1 9 8.5v5"/>
+                </g>
               </svg>
               Efemérides Afro
             </h3>

@@ -58,6 +58,18 @@ function MapInner({ selectedState, onStateSelect, resourceCounts }: VenezuelaMap
     }
   }, [selectedState, L, geoData]);
 
+  // Asegura que Leaflet recalcule su tamaño si su contenedor cambia (ej: de oculto a visible en móvil)
+  useEffect(() => {
+    if (!mapRef.current) return;
+    const observer = new ResizeObserver(() => {
+      mapRef.current?.invalidateSize();
+    });
+    const el = mapRef.current.getContainer();
+    if (el) observer.observe(el);
+    return () => observer.disconnect();
+  }, [L, RL, geoData]);
+
+
   if (!L || !RL || !geoData) {
     return (
       <div className="w-full h-full flex items-center justify-center bg-blue-50 rounded-2xl border-2 border-brand-purple/20">

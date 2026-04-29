@@ -2,18 +2,12 @@ import React from "react";
 
 export default function GaleriaPage() {
   const photos = [
-    { id: 0, height: "h-52",  title: "Festival Afrovenezolano 2024", tag: "Cultura" },
-    { id: 1, height: "h-72",  title: "Encuentro de Tambores",        tag: "Música" },
-    { id: 2, height: "h-44",  title: "Feria Gastronómica",           tag: "Gastronomía" },
-    { id: 3, height: "h-64",  title: "Taller de Arte Urbano",        tag: "Arte" },
-    { id: 4, height: "h-48",  title: "Congreso CONADECAFRO 2023",   tag: "Evento" },
-    { id: 5, height: "h-80",  title: "Danza Afrovenezolana",         tag: "Cultura" },
-    { id: 6, height: "h-56",  title: "Mural Comunitario — Caracas",  tag: "Arte" },
-    { id: 7, height: "h-44",  title: "Expo Emprendedoras Afro",      tag: "Emprendimiento" },
-    { id: 8, height: "h-72",  title: "Ceremonia de Identidad",       tag: "Tradición" },
-    { id: 9, height: "h-48",  title: "Clase de Historia Afro",       tag: "Educación" },
-    { id: 10, height: "h-60", title: "Feria de Salud Comunitaria",   tag: "Salud" },
-    { id: 11, height: "h-52", title: "Colectivo Juvenil Afro",       tag: "Juventud" },
+    { id: 0, height: "h-64", title: "Ofrenda Floral 11° Aniversario", tag: "Evento", url: "https://conadecafro.wordpress.com/wp-content/uploads/2023/03/ofrenda-floral-de-conadecafro-11-aniversario-1.jpg" },
+    { id: 1, height: "h-72", title: "Cierre del III Congreso Nacional Afrovenezolano", tag: "Cultura", url: "https://conadecafro.wordpress.com/wp-content/uploads/2023/03/cierre-iii-congreso-nacional-afrovenezolano-plenaria-en-la-escuela-venezolana-de-planificacion-este-sabado-25-de-febrero-con-un-homenaje-a-la-cimarrona-norma-romero-y-al-cimarron-mayor-a.jpg" },
+    { id: 2, height: "h-52", title: "Participación Popular en el Congreso", tag: "Juventud", url: "https://conadecafro.wordpress.com/wp-content/uploads/2023/03/cierre-iii-congreso-nacional-afrovenezolano-plenaria-en-la-escuela-venezolana-de-planificacion-este-sabado-25-de-febrero-con-un-homenaje-a-la-cimarrona-norma-romero-y-al-cimarron-mayor-a-2.jpg" },
+    { id: 3, height: "h-80", title: "Homenaje a Líderes Afrovenezolanos", tag: "Tradición", url: "https://conadecafro.wordpress.com/wp-content/uploads/2023/03/cierre-iii-congreso-nacional-afrovenezolano-plenaria-en-la-escuela-venezolana-de-planificacion-este-sabado-25-de-febrero-con-un-homenaje-a-la-cimarrona-norma-romero-y-al-cimarron-mayor-a-4.jpg" },
+    { id: 4, height: "h-56", title: "Equipo Institucional de Conadecafro", tag: "Evento", url: "https://conadecafro.wordpress.com/wp-content/uploads/2023/03/ofrenda-floral-de-conadecafro-11-aniversario-6.jpg" },
+    { id: 5, height: "h-60", title: "Congreso de la Nueva Época", tag: "Educación", url: "https://conadecafro.wordpress.com/wp-content/uploads/2023/03/336159691_1369704533763339_3421413764139418524_n.jpg" },
   ];
 
   const tagColors: Record<string, string> = {
@@ -25,7 +19,7 @@ export default function GaleriaPage() {
     Tradición: "bg-brand-purple",
     Educación: "bg-purple-700",
     Salud: "bg-brand-purple",
-    Juventud: "bg-purple-700",
+    Juventud: "bg-brand-yellow text-brand-black",
     Emprendimiento: "bg-brand-yellow text-brand-black",
   };
 
@@ -42,32 +36,38 @@ export default function GaleriaPage() {
       </div>
 
       {/* Masonry grid */}
-      <div className="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-4 space-y-4">
+      <div className="columns-1 sm:columns-2 lg:columns-3 gap-4 space-y-4">
         {photos.map((photo) => (
           <div
             key={photo.id}
-            className={`w-full bg-gradient-to-br from-gray-200 to-gray-300 rounded-xl overflow-hidden break-inside-avoid relative group ${photo.height} cursor-pointer`}
+            className={`w-full bg-gray-200 rounded-xl overflow-hidden break-inside-avoid relative group ${photo.height} cursor-pointer shadow-sm`}
           >
-            {/* Placeholder gradient */}
-            <div className={`absolute inset-0 opacity-30 bg-gradient-to-br ${
-              photo.id % 3 === 0
-                ? "from-brand-purple/40 to-brand-black/60"
-                : photo.id % 3 === 1
-                ? "from-brand-yellow/30 to-brand-purple/40"
-                : "from-brand-black/40 to-brand-purple/30"
-            }`} />
+            {/* Imagen real */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img 
+              src={photo.url} 
+              alt={photo.title} 
+              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+              loading="lazy"
+            />
+
+            {/* Gradiente oscuro inferior siempre visible para asegurar que el título se lea */}
+            <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/80 to-transparent pointer-events-none" />
 
             {/* Tag badge */}
-            <div className="absolute top-3 left-3">
-              <span className={`text-xs font-bold px-2.5 py-1 rounded-full text-white ${tagColors[photo.tag] || "bg-brand-purple"}`}>
+            <div className="absolute top-3 left-3 z-10">
+              <span className={`text-xs font-bold px-2.5 py-1 rounded-full text-white shadow-sm ${tagColors[photo.tag] || "bg-brand-purple"}`}>
                 {photo.tag}
               </span>
             </div>
 
-            {/* Hover overlay */}
-            <div className="absolute inset-0 bg-brand-black/75 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
-              <p className="text-white font-bold text-sm leading-snug">{photo.title}</p>
+            {/* Título permanente abajo */}
+            <div className="absolute inset-0 flex items-end p-4 z-10">
+              <p className="text-white font-bold text-sm leading-snug drop-shadow-md">{photo.title}</p>
             </div>
+            
+            {/* Overlay hover sutil */}
+            <div className="absolute inset-0 bg-brand-purple/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
           </div>
         ))}
       </div>

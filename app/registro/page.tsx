@@ -53,7 +53,7 @@ export default function RegistroPage() {
 
         {/* Map panel — fills remaining space, shown on mobile only when toggled */}
         <div className={`
-          flex-grow flex flex-col min-h-[400px] md:min-h-0 px-4 pb-4 md:px-0 md:pb-0
+          flex-grow flex flex-col h-[calc(100vh-140px)] md:h-auto md:min-h-0 px-4 py-4 md:px-0 md:py-0
           ${!showMap ? "hidden md:flex" : "flex"}
         `}>
           <VenezuelaMap

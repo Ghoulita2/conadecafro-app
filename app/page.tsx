@@ -52,16 +52,7 @@ const efemerides = [
   { dia: "02", mes: "AGO", texto: "Día Nacional contra la Discriminación" },
 ];
 
-const socialLinks = [
-  { label: "Facebook", url: "https://www.facebook.com/somosconadecafro", color: "hover:text-blue-600",
-    svg: <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg> },
-  { label: "Twitter / X", url: "https://twitter.com/conadecafrove", color: "hover:text-sky-500",
-    svg: <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M4 4l16.5 16M20 4 3.5 20.5"/><path d="m20 4-7.5 7.5m0 0L4 4M12.5 11.5 20 20"/><path stroke="currentColor" strokeWidth="2" strokeLinecap="round" d="M4 4l5.5 6.5M20 4l-5.5 6.5m-2 0L4 20m16 0-7.5-9"/></svg> },
-  { label: "Instagram", url: "https://www.instagram.com/infoconadecafro/", color: "hover:text-pink-500",
-    svg: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="18" height="18"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg> },
-  { label: "YouTube", url: "https://www.youtube.com/channel/UCzpXDvI9b9BVq3O7XANa2aQ", color: "hover:text-red-500",
-    svg: <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 0 0-1.95 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.95 1.95C5.12 20 12 20 12 20s6.88 0 8.59-.47a2.78 2.78 0 0 0 1.95-1.95A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon fill="white" points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg> },
-];
+
 
 const tagColor: Record<string, string> = {
   "Noticias": "bg-brand-purple text-white",
@@ -149,8 +140,11 @@ export default function Home() {
         <aside className="w-full lg:w-72 flex-shrink-0 space-y-5">
           {/* Efemérides */}
           <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
-            <h3 className="font-black text-gray-800 mb-4 border-b border-gray-100 pb-2 text-sm uppercase tracking-wider">
-              📅 Efemérides Afro
+            <h3 className="font-black text-gray-800 mb-4 border-b border-gray-100 pb-2 text-sm uppercase tracking-wider flex items-center gap-2">
+              <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 text-brand-purple">
+                <path d="M8.5 13.5v-7A1.5 1.5 0 0 1 10 5a1.5 1.5 0 0 1 1.5 1.5v6M11.5 12V4A1.5 1.5 0 0 1 13 2.5 1.5 1.5 0 0 1 14.5 4v8M14.5 12V5.5A1.5 1.5 0 0 1 16 4a1.5 1.5 0 0 1 1.5 1.5v7M17.5 12v-1.5A1.5 1.5 0 0 1 19 9a1.5 1.5 0 0 1 1.5 1.5V15c0 4-2 7-6 7H9c-4 0-6-3-6-7v-3A1.5 1.5 0 0 1 4.5 10.5 1.5 1.5 0 0 1 6 12v2.5M6 14.5v-6A1.5 1.5 0 0 1 7.5 7 1.5 1.5 0 0 1 9 8.5v5"/>
+              </svg>
+              Efemérides Afro
             </h3>
             <ul className="space-y-3">
               {efemerides.map((e) => (
@@ -165,26 +159,7 @@ export default function Home() {
             </ul>
           </div>
 
-          {/* Redes sociales */}
-          <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
-            <h3 className="font-black text-gray-800 mb-4 border-b border-gray-100 pb-2 text-sm uppercase tracking-wider">
-              Síguenos
-            </h3>
-            <div className="grid grid-cols-2 gap-2">
-              {socialLinks.map(({ svg, url, label, color }) => (
-                <a
-                  key={url}
-                  href={url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={`flex items-center gap-2 text-gray-600 ${color} transition-colors text-sm font-semibold p-2 rounded-lg hover:bg-gray-50`}
-                >
-                  {svg}
-                  <span className="truncate text-xs">{label}</span>
-                </a>
-              ))}
-            </div>
-          </div>
+
 
           {/* CTA Censo */}
           <div className="bg-brand-yellow rounded-2xl p-5">
@@ -219,30 +194,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* === FOOTER === */}
-      <footer className="bg-white border-t border-gray-200 py-8 px-4">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-          <Image
-            src="https://conadecafro.wordpress.com/wp-content/uploads/2016/04/logo-conadecafro-completo.png"
-            alt="Conadecafro"
-            width={150}
-            height={45}
-            className="h-9 w-auto object-contain"
-            unoptimized
-          />
-          <p className="text-xs text-gray-400 text-center">
-            © {new Date().getFullYear()} Conadecafro — Consejo Nacional para el Desarrollo de las Comunidades Afrodescendientes de Venezuela
-          </p>
-          <div className="flex items-center gap-3">
-            {socialLinks.map(({ svg, url, label }) => (
-              <a key={url} href={url} target="_blank" rel="noopener noreferrer" aria-label={label}
-                className="text-gray-400 hover:text-brand-purple transition-colors">
-                {svg}
-              </a>
-            ))}
-          </div>
-        </div>
-      </footer>
+
     </div>
   );
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { RegisterForm } from "../../components/forms/RegisterForm";
 import { FilterPanel } from "../../components/dashboard/FilterPanel";
 import { ResourceList } from "../../components/dashboard/ResourceList";
@@ -12,6 +12,16 @@ export default function RegistroPage() {
   const { resources } = useDatabase();
   const [selectedState, setSelectedState] = useState<string>("Todos");
   const [showMap, setShowMap] = useState(false);
+
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Hook para detectar si estamos en móvil para el renderizado condicional del mapa
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile(); // Check on mount
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   // Count resources per state for the map
   const resourceCounts = useMemo(() => {
@@ -56,11 +66,16 @@ export default function RegistroPage() {
           flex-grow flex flex-col h-[calc(100vh-140px)] md:h-auto md:min-h-0 px-4 py-4 md:px-0 md:py-0
           ${!showMap ? "hidden md:flex" : "flex"}
         `}>
-          <VenezuelaMap
-            selectedState={selectedState}
-            onStateSelect={setSelectedState}
-            resourceCounts={resourceCounts}
-          />
+          {(!isMobile || showMap) && (
+            <VenezuelaMap
+              selectedState={selectedState}
+              onStateSelect={(stateName) => {
+                setSelectedState(stateName);
+                setShowMap(false); // Auto-hide map on mobile after selection
+              }}
+              resourceCounts={resourceCounts}
+            />
+          )}
         </div>
       </div>
     </main>

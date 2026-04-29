@@ -2,12 +2,12 @@ import React from "react";
 
 export default function GaleriaPage() {
   const photos = [
-    { id: 0, height: "h-64", title: "Ofrenda Floral 11° Aniversario", tag: "Evento", url: "https://conadecafro.wordpress.com/wp-content/uploads/2023/03/ofrenda-floral-de-conadecafro-11-aniversario-1.jpg" },
-    { id: 1, height: "h-72", title: "Cierre del III Congreso Nacional Afrovenezolano", tag: "Cultura", url: "https://conadecafro.wordpress.com/wp-content/uploads/2023/03/cierre-iii-congreso-nacional-afrovenezolano-plenaria-en-la-escuela-venezolana-de-planificacion-este-sabado-25-de-febrero-con-un-homenaje-a-la-cimarrona-norma-romero-y-al-cimarron-mayor-a.jpg" },
-    { id: 2, height: "h-52", title: "Participación Popular en el Congreso", tag: "Juventud", url: "https://conadecafro.wordpress.com/wp-content/uploads/2023/03/cierre-iii-congreso-nacional-afrovenezolano-plenaria-en-la-escuela-venezolana-de-planificacion-este-sabado-25-de-febrero-con-un-homenaje-a-la-cimarrona-norma-romero-y-al-cimarron-mayor-a-2.jpg" },
-    { id: 3, height: "h-80", title: "Homenaje a Líderes Afrovenezolanos", tag: "Tradición", url: "https://conadecafro.wordpress.com/wp-content/uploads/2023/03/cierre-iii-congreso-nacional-afrovenezolano-plenaria-en-la-escuela-venezolana-de-planificacion-este-sabado-25-de-febrero-con-un-homenaje-a-la-cimarrona-norma-romero-y-al-cimarron-mayor-a-4.jpg" },
-    { id: 4, height: "h-56", title: "Equipo Institucional de Conadecafro", tag: "Evento", url: "https://conadecafro.wordpress.com/wp-content/uploads/2023/03/ofrenda-floral-de-conadecafro-11-aniversario-6.jpg" },
-    { id: 5, height: "h-60", title: "Congreso de la Nueva Época", tag: "Educación", url: "https://conadecafro.wordpress.com/wp-content/uploads/2023/03/336159691_1369704533763339_3421413764139418524_n.jpg" },
+    { id: 0, height: "h-64", title: "Encuentro de Saberes y Tradiciones", tag: "Cultura", url: "https://lookaside.instagram.com/seo/google_widget/crawler/?media_id=3884771158256594183" },
+    { id: 1, height: "h-72", title: "Equipo Institucional de Conadecafro en Reunión de Trabajo", tag: "Evento", url: "https://lookaside.instagram.com/seo/google_widget/crawler/?media_id=3884571574464832824" },
+    { id: 2, height: "h-52", title: "Actividades Culturales de Jóvenes Afrovenezolanos", tag: "Juventud", url: "https://lookaside.instagram.com/seo/google_widget/crawler/?media_id=3884158341677506363" },
+    { id: 3, height: "h-80", title: "Logros Institucionales 2024 - Conadecafro", tag: "Educación", url: "https://lookaside.instagram.com/seo/google_widget/crawler/?media_id=3557669337889871377" },
+    { id: 4, height: "h-56", title: "Celebración de la Identidad Afrovenezolana", tag: "Tradición", url: "https://lookaside.instagram.com/seo/google_widget/crawler/?media_id=3849156752130874389" },
+    { id: 5, height: "h-60", title: "Efemérides de Julio: Homenaje a Argelia Laya", tag: "Historia", url: "https://lookaside.instagram.com/seo/google_widget/crawler/?media_id=2609113452168630064" },
   ];
 
   const tagColors: Record<string, string> = {
